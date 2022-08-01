@@ -229,6 +229,9 @@ func (bcR *BlockchainReactor) Receive(chID byte, src p2p.Peer, msgBytes []byte) 
 			bcR.Logger.Error("Block content is invalid", "err", err)
 			return
 		}
+		if bi.Height%1000 == 0 {
+			bcR.Logger.Debug("Current received block height", "height", bi.Height)
+		}
 		bcR.pool.AddBlock(src.ID(), bi, len(msgBytes))
 	case *bcproto.StatusRequest:
 		// Send peer our state.
